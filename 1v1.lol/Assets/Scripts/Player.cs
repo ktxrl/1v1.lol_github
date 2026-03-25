@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = duck
     {
-        transform.position = new Vector2(-7.5f, -1.6f);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         time = 0;
