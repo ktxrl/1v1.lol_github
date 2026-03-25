@@ -18,9 +18,11 @@ public class Player : MonoBehaviour
     float time, rolltime, rollcooldown, ogX, ogY;
     int coinCount, lives;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = duck
-    {
+    void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = attack1, 6 = attack2, 7 = attack3
+    { // C = roll, V = attack
         rb = GetComponent<Rigidbody2D>();
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        transform.rotation = new Quaternion(0, 0, 0, 0);
         animator = GetComponent<Animator>();
         time = 0;
         rolltime = 0;
@@ -40,12 +42,9 @@ public class Player : MonoBehaviour
         if (roll)
         {
             rolltime += Time.deltaTime;
-            if (rolltime > .3f)
+            if (rolltime > .5f)
             {
                 rolltime = 0;
-                rb.constraints = RigidbodyConstraints2D.None;
-                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                transform.rotation = new Quaternion(0, 0, 0, 0);
                 roll = false;
             }
         }
@@ -57,13 +56,16 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.D) && !roll) right = true;
         if (Input.GetKeyUp(KeyCode.A)) left = false;
         if (Input.GetKeyUp(KeyCode.D)) right = false;
-        if (Input.GetKey(KeyCode.Space) && !roll && rollcooldown > .2f)
+        if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
-            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
             roll = true;
             rollcooldown = 0;
         }
         if (Input.GetKeyDown(KeyCode.W) && IsGround() && !roll && !die) rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+        if (Input.GetKeyDown(KeyCode.V) && !roll && !die)
+        {
+            //attack
+        }
         UpdateState();
         //if (die && Input.GetKeyDown(KeyCode.R))
         //if (Input.GetKeyDown(KeyCode.R))
@@ -102,11 +104,11 @@ public class Player : MonoBehaviour
             {
                 if (direction)
                 {
-                    horizontal += 2.5f * speed;
+                    horizontal += 1.5f * speed;
                 }
                 else
                 {
-                    horizontal -= 2.5f * speed;
+                    horizontal -= 1.5f * speed;
                 }
             }
             else if (left)
@@ -126,9 +128,9 @@ public class Player : MonoBehaviour
     }
     public bool IsGround()
     {
-        RaycastHit2D[] rays1 = Physics2D.RaycastAll(new Vector2(transform.position.x - .4f, transform.position.y), Vector2.down, .8f);
-        RaycastHit2D[] rays2 = Physics2D.RaycastAll(new Vector2(transform.position.x + .4f, transform.position.y), Vector2.down, .8f);
-        RaycastHit2D[] rays3 = Physics2D.RaycastAll(new Vector2(transform.position.x, transform.position.y), Vector2.down, .8f);
+        RaycastHit2D[] rays1 = Physics2D.RaycastAll(new Vector2(transform.position.x - .46f, transform.position.y + .06f), Vector2.down, .1f);
+        RaycastHit2D[] rays2 = Physics2D.RaycastAll(new Vector2(transform.position.x + .34f, transform.position.y +.06f), Vector2.down, .1f);
+        RaycastHit2D[] rays3 = Physics2D.RaycastAll(new Vector2(transform.position.x, transform.position.y + .06f), Vector2.down, .1f);
         if (rays1.Length > 1 || rays2.Length > 1 || rays3.Length > 1) return true;
         return false;
     }
