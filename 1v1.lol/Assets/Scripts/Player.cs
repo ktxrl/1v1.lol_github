@@ -14,9 +14,9 @@ public class Player : MonoBehaviour
     [SerializeField] Text lifeText;
     Rigidbody2D rb;
     Animator animator;
-    bool left, right, roll, die, direction; //false = left, true = right
-    float time, rolltime, rollcooldown, ogX, ogY;
-    int coinCount, lives;
+    bool left, right, roll, die, direction, attack; //false = left, true = right
+    float time, rolltime, rollcooldown, ogX, ogY, lastAttack, comboDelay, attackTime;
+    int coinCount, lives, combo;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = attack1, 6 = attack2, 7 = attack3
     { // C = roll, V = attack
@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
         direction = true;
         coinCount = 0;
         lives = 3;
+        comboDelay = 0.5f;
+        attackTime = 0;
     }
 
     // Update is called once per frame
@@ -64,7 +66,20 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && IsGround() && !roll && !die) rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
         if (Input.GetKeyDown(KeyCode.V) && !roll && !die)
         {
-            //attack
+            attack = true;
+            lastAttack = Time.time;
+            combo++;
+            if (combo > 3) combo = 1;
+        }
+        if (Time.time - lastAttack > comboDelay) combo = 0;
+        if (attack)
+        {
+            attackTime += Time.deltaTime;
+            if (attackTime > 1f)
+            {
+                attack = false;
+                attackTime = 0;
+            }
         }
         UpdateState();
         //if (die && Input.GetKeyDown(KeyCode.R))
@@ -88,6 +103,7 @@ public class Player : MonoBehaviour
     {
         int state;
         if (roll) state = 4;
+        else if (attack && combo != 0) state = combo + 4;
         else if (rb.linearVelocityY <= 0 && !IsGround()) state = 3;
         else if (rb.linearVelocityY > 0 && !IsGround()) state = 2;
         else if (IsGround() && Math.Abs(rb.linearVelocityX) > 0.1f) state = 1;
