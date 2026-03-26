@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
         direction = true;
         coinCount = 0;
         lives = 3;
-        comboDelay = 0.5f;
+        comboDelay = 2f;
         attackTime = 0;
     }
 
@@ -63,7 +63,12 @@ public class Player : MonoBehaviour
             roll = true;
             rollcooldown = 0;
         }
-        if (Input.GetKeyDown(KeyCode.W) && IsGround() && !roll && !die) rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+        //if (IsGround() && !Input.GetButton("Jump")) doubleJump = false;
+        if (Input.GetKeyDown(KeyCode.W) && IsGround() && !roll && !die)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+
+        }
         if (Input.GetKeyDown(KeyCode.V) && !roll && !die)
         {
             attack = true;
@@ -71,6 +76,7 @@ public class Player : MonoBehaviour
             combo++;
             if (combo > 3) combo = 1;
         }
+        Debug.Log(combo);
         if (Time.time - lastAttack > comboDelay) combo = 0;
         if (attack)
         {
