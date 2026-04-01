@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class TullyMonster67 : MonoBehaviour
 {
-    [SerializeField] Enemy flying;
-    [SerializeField] Enemy skeleton;
-    [SerializeField] Enemy lizard;
+    [SerializeField] Flying flying;
+    [SerializeField] Skeleton skeleton;
+    [SerializeField] Lizard lizard;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,19 +20,18 @@ public class TullyMonster67 : MonoBehaviour
     public void FlyingSelect()
     {
 
-        skeleton.GetComponent<Enemy>().Deselect();
-        lizard.GetComponent<Enemy>().Deselect();
+        skeleton.GetComponent<Skeleton>().Deselect();
+        //lizard.GetComponent<Lizard>().Deselect();
     }
     public void SkeletonSelect()
     {
 
-        flying.GetComponent<Enemy>().Deselect();
-        lizard.GetComponent<Enemy>().Deselect();
+        flying.GetComponent<Flying>().Deselect();
+        //lizard.GetComponent<Lizard>().Deselect();
     }
     public void LizardSelect()
     {
-
-        flying.GetComponent<Enemy>().Deselect();
-        skeleton.GetComponent<Enemy>().Deselect();
+        flying.GetComponent<Flying>().Deselect();
+        skeleton.GetComponent<Skeleton>().Deselect();
     }
 }

@@ -1,16 +1,18 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Skeleton : MonoBehaviour
 {
     [SerializeField] GameObject manager;
     [SerializeField] float speed;
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     public bool controlling, direction;
     Rigidbody2D rb;
+    Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         controlling = false;
     }
 
@@ -21,17 +23,20 @@ public class Enemy : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                GetComponent<SpriteRenderer>().flipX = false;
+                GetComponent<SpriteRenderer>().flipX = true;
                 rb.linearVelocity = new Vector2(-speed, rb.linearVelocityY);
-            } 
+                animator.SetInteger("State", 1);
+            }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-                GetComponent<SpriteRenderer>().flipX = true;
+                GetComponent<SpriteRenderer>().flipX = false;
                 rb.linearVelocity = new Vector2(speed, rb.linearVelocityY);
+                animator.SetInteger("State", 1);
             }
             else
             {
                 rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+                animator.SetInteger("State", 0);
             }
         }
         else
@@ -49,5 +54,7 @@ public class Enemy : MonoBehaviour
     public void Deselect()
     {
         controlling = false;
+        rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+        animator.SetInteger("State", 0);
     }
 }

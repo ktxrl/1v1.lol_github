@@ -177,12 +177,11 @@ public class Player : MonoBehaviour
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (roll) rolltime = .5f;
         if (collision.gameObject.tag == "spike")
         {
             //die
-            lives--;
-            lifeText.text = "Lives: " + lives;
+            //lives--;
+            //lifeText.text = "Lives: " + lives;
             if (lives <= 0)
             {
                 die = true;
@@ -198,22 +197,20 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.tag == "enemy")
         {
-            lives--;
-            lifeText.text = "Lives: " + lives;
-            if (lives <= 0)
-            {
-                die = true;
-                rb.linearVelocity = Vector2.zero;
-                dieText.enabled = true;
-                dieText.text = "You Died. You collected " + coinCount + " gems";
-                UpdateState();
-            }
-            else
-            {
+            //lives--;
+            //lifeText.text = "Lives: " + lives;
+            //if (lives <= 0)
+            //{
+            //    die = true;
+            //    rb.linearVelocity = Vector2.zero;
+            //    dieText.enabled = true;
+            //    dieText.text = "You Died. You collected " + coinCount + " gems";
+            //    UpdateState();
+            //}
+            //else
+            //{
                 transform.position = new Vector2(ogX, ogY);
-            }
-            
+            //}
         }
     }
 }
- 
