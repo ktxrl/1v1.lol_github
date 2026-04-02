@@ -6,38 +6,50 @@ public class Lizard : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     public bool controlling, direction;
+    int state;
     Rigidbody2D rb;
+    Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         controlling = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (controlling)
+        if (controlling) // state 0: idle, 1: move, 2: shoot
         {
             if (Input.GetKey(KeyCode.LeftArrow))
             {
                 GetComponent<SpriteRenderer>().flipX = false;
                 rb.linearVelocity = new Vector2(-speed, rb.linearVelocityY);
+                state = 1;
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
                 GetComponent<SpriteRenderer>().flipX = true;
                 rb.linearVelocity = new Vector2(speed, rb.linearVelocityY);
+                state = 1;
             }
             else
             {
                 rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+                state = 0;
+            }
+            if (Input.GetKeyDown(KeyCode.Keypad0))
+            {
+                state = 2;
+                //initialize fireball
             }
         }
         else
         {
 
         }
+        animator.SetInteger("State", state);
     }
     public void OnMouseDown()
     {

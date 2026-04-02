@@ -21,13 +21,13 @@ public class TullyMonster67 : MonoBehaviour
     {
 
         skeleton.GetComponent<Skeleton>().Deselect();
-        //lizard.GetComponent<Lizard>().Deselect();
+        lizard.GetComponent<Lizard>().Deselect();
     }
     public void SkeletonSelect()
     {
 
         flying.GetComponent<Flying>().Deselect();
-        //lizard.GetComponent<Lizard>().Deselect();
+        lizard.GetComponent<Lizard>().Deselect();
     }
     public void LizardSelect()
     {
