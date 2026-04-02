@@ -20,7 +20,7 @@ public class slidercode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
         if (MV && MVmove)
         {
             if (Input.GetMouseButton(0))
@@ -40,6 +40,10 @@ public class slidercode : MonoBehaviour
             if (transform.position.x < -8)
             {
                 transform.position = new Vector2(-8f, 1.52f);
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                MVmove = false;
             }
         }
         if (SE && SEmove)
@@ -62,6 +66,10 @@ public class slidercode : MonoBehaviour
             {
                 transform.position = new Vector2(-8f, -1.23f);
             }
+            if (Input.GetMouseButtonUp(0))
+            {
+                SEmove = false;
+            }
         }
         if (MP && MPmove)
         {
@@ -83,47 +91,45 @@ public class slidercode : MonoBehaviour
             {
                 transform.position = new Vector2(-8f, -3.98f);
             }
+            if (Input.GetMouseButtonUp(0))
+            {
+                MPmove = false;
+            }
         }
-        if (Input.GetMouseButtonUp(0))
-        {
-            single = false;
-        }
-        if (Input.GetMouseButton(0) == false)
-        {
-            single = false;
-        }
+
 
 
 
     }
     private void OnMouseOver()
     {
-        if (single == true)
-        {
-            return;
-        }
-        if (MV )
+
+        if (MV && Input.GetMouseButtonUp(0))
         {
 
-                MVmove = true;
+            MVmove = true;
             SEmove = false;
             MPmove = false;
-            
+
+
+
         }
             
-        if (SE )
-             { 
+        if (SE && Input.GetMouseButtonUp(0))
+             {
+            MVmove = false;
             SEmove = true;
             MPmove = false;
-            MVmove = false;
+
         } 
-        if (MP )
+        if (MP && Input.GetMouseButtonUp(0))
         {
-           
-                MPmove = true;
-            SEmove = false;
+
             MVmove = false;
-            
+            SEmove = false;
+            MPmove = true;
+
+
         }
     }
     private void OnMouseDown()
