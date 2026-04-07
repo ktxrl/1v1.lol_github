@@ -7,6 +7,7 @@ public class Flying : MonoBehaviour
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     public bool controlling, direction;
     Rigidbody2D rb;
+    bool left, right, up, down;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,22 +23,42 @@ public class Flying : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftArrow))
             {
                 GetComponent<SpriteRenderer>().flipX = false;
-                rb.linearVelocity = new Vector2(-speed, rb.linearVelocityY);
-            } 
-            else if (Input.GetKey(KeyCode.RightArrow))
+                left = true;
+                //rb.linearVelocity = new Vector2(-speed, rb.linearVelocityY);
+            } else left = false;
+            if (Input.GetKey(KeyCode.RightArrow))
             {
                 GetComponent<SpriteRenderer>().flipX = true;
-                rb.linearVelocity = new Vector2(speed, rb.linearVelocityY);
-            }
-            else
+                right = true;
+                //rb.linearVelocity = new Vector2(speed, rb.linearVelocityY);
+            } else right = false;
+            if (Input.GetKey(KeyCode.UpArrow))
             {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+                //rb.linearVelocity = new Vector2(rb.linearVelocityX, speed);
+                up = true;
             }
+            else up = false;
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                //rb.linearVelocity = new Vector2(rb.linearVelocityX, -speed);
+                down = true;
+            }
+            else down = false;
         }
         else
         {
-
+            rb.linearVelocity = new Vector2(0, 0);
         }
+    }
+    public void FixedUpdate()
+    {
+        float xSpeed = 0;
+        float ySpeed = 0;
+        if (left) xSpeed = -speed;
+        else if (right) xSpeed = speed;
+        if (up) ySpeed = speed;
+        else if (down) ySpeed = -speed;
+        rb.linearVelocity = new Vector2(xSpeed, ySpeed);
     }
     public void OnMouseDown()
     {
@@ -49,6 +70,6 @@ public class Flying : MonoBehaviour
     public void Deselect()
     {
         controlling = false;
-        rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+        rb.linearVelocity = new Vector2(0, 0);
     }
 }

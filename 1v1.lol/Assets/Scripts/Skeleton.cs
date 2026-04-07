@@ -41,7 +41,7 @@ public class Skeleton : MonoBehaviour
         }
         else
         {
-
+            rb.linearVelocity = new Vector2(0, 0);
         }
     }
     public void OnMouseDown()
@@ -54,7 +54,7 @@ public class Skeleton : MonoBehaviour
     public void Deselect()
     {
         controlling = false;
-        rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+        rb.linearVelocity = new Vector2(0, 0);
         animator.SetInteger("State", 0);
     }
 }
