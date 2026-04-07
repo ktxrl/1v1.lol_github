@@ -5,6 +5,7 @@ public class Lizard : MonoBehaviour
     [SerializeField] GameObject manager;
     [SerializeField] float speed;
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
+    [SerializeField] GameObject fireball;
     public bool controlling, direction;
     int state;
     Rigidbody2D rb;
@@ -43,6 +44,7 @@ public class Lizard : MonoBehaviour
             {
                 state = 2;
                 //initialize fireball
+                GameObject o = Instantiate(fireball, transform.position, Quaternion.identity);
             }
         }
         else
