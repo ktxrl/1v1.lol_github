@@ -49,11 +49,8 @@ public class Lizard : MonoBehaviour
             {
                 state = 2;
                 //initialize fireball
-<<<<<<< HEAD
                 GameObject o = Instantiate(fireball, transform.position, Quaternion.identity);
-=======
                 o = Instantiate(fireball, transform.position, Quaternion.identity);
->>>>>>> parent of e07bfff (ssz)
                 if (direction)
                 {
                     fireballSpeed = -2.5f;
@@ -66,10 +63,7 @@ public class Lizard : MonoBehaviour
                 }
                 o.GetComponent<Fireball>().enabled = true;
                 Invoke("DelayFireball", .25f);
-<<<<<<< HEAD
                 //GameObject o = Instantiate(fireball, transform.position, Quaternion.identity);
-=======
->>>>>>> parent of e07bfff (ssz)
             }
         }
         else
