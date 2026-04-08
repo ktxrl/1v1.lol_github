@@ -10,6 +10,7 @@ public class slidercode : MonoBehaviour
     public bool SEmove = false;
     public bool MPmove = false;
     public bool single = false;
+    //[SerializeField] GameObject manager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,8 +21,17 @@ public class slidercode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (MV)
+        {
+            //manager.GetComponent<TullyMonster67>().MVvolume((transform.position.x + 6)/12);
+        }
+        
+    }
 
-        if (MV && MVmove)
+    private void OnMouseOver()
+    {
+
+        if (MV)
         {
             if (Input.GetMouseButton(0))
             {
@@ -41,12 +51,9 @@ public class slidercode : MonoBehaviour
             {
                 transform.position = new Vector2(-8f, 1.52f);
             }
-            if (Input.GetMouseButtonUp(0))
-            {
-                MVmove = false;
-            }
+
         }
-        if (SE && SEmove)
+        if (SE)
         {
             if (Input.GetMouseButton(0))
             {
@@ -66,12 +73,9 @@ public class slidercode : MonoBehaviour
             {
                 transform.position = new Vector2(-8f, -1.23f);
             }
-            if (Input.GetMouseButtonUp(0))
-            {
-                SEmove = false;
-            }
+
         }
-        if (MP && MPmove)
+        if (MP)
         {
             if (Input.GetMouseButton(0))
             {
@@ -91,50 +95,7 @@ public class slidercode : MonoBehaviour
             {
                 transform.position = new Vector2(-8f, -3.98f);
             }
-            if (Input.GetMouseButtonUp(0))
-            {
-                MPmove = false;
-            }
-        }
-
-
-
-
-    }
-    private void OnMouseOver()
-    {
-
-        if (MV && Input.GetMouseButtonUp(0))
-        {
-
-            MVmove = true;
-            SEmove = false;
-            MPmove = false;
-
-
-
-        }
-            
-        if (SE && Input.GetMouseButtonUp(0))
-             {
-            MVmove = false;
-            SEmove = true;
-            MPmove = false;
-
-        } 
-        if (MP && Input.GetMouseButtonUp(0))
-        {
-
-            MVmove = false;
-            SEmove = false;
-            MPmove = true;
-
-
-        }
-    }
-    private void OnMouseDown()
-    {
         
+        }
     }
-
 }

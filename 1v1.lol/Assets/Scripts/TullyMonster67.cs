@@ -5,11 +5,12 @@ public class TullyMonster67 : MonoBehaviour
     [SerializeField] Flying flying;
     [SerializeField] Skeleton skeleton;
     [SerializeField] Lizard lizard;
+    public AudioSource mainmusic;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
@@ -33,5 +34,9 @@ public class TullyMonster67 : MonoBehaviour
     {
         flying.GetComponent<Flying>().Deselect();
         skeleton.GetComponent<Skeleton>().Deselect();
+    }
+    public void MVvolume(float value)
+    {
+        mainmusic.volume = value;
     }
 }
