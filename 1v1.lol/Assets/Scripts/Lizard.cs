@@ -48,9 +48,7 @@ public class Lizard : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
                 state = 2;
-                //initialize fireball
-                GameObject o = Instantiate(fireball, transform.position, Quaternion.identity);
-                o = Instantiate(fireball, transform.position, Quaternion.identity);
+                this.o = Instantiate(fireball, transform.position, Quaternion.identity);
                 if (direction)
                 {
                     fireballSpeed = -2.5f;
@@ -74,7 +72,7 @@ public class Lizard : MonoBehaviour
     }
     public void DelayFireball()
     {
-        o.GetComponent<Rigidbody2D>().AddForceX(fireballSpeed, ForceMode2D.Impulse);
+        this.o.GetComponent<Rigidbody2D>().AddForceX(fireballSpeed, ForceMode2D.Impulse);
     }
     public void OnMouseDown()
     {
