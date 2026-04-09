@@ -1,3 +1,4 @@
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class TullyMonster67 : MonoBehaviour
@@ -5,13 +6,26 @@ public class TullyMonster67 : MonoBehaviour
     [SerializeField] Flying flying;
     [SerializeField] Skeleton skeleton;
     [SerializeField] Lizard lizard;
+    public AudioSource Music;
+    public static GameObject original;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        DontDestroyOnLoad(gameObject);
     }
-
+    void Awake()
+    {
+        // Check if instance already exists
+        if (original == null)
+        {
+            original = gameObject;
+        }
+        if(gameObject != original) 
+           {
+                Destroy(gameObject);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -33,5 +47,9 @@ public class TullyMonster67 : MonoBehaviour
     {
         flying.GetComponent<Flying>().Deselect();
         skeleton.GetComponent<Skeleton>().Deselect();
+    }
+    public void ChangeMainVolume(float volume)
+    {
+        Music.volume = volume;
     }
 }
