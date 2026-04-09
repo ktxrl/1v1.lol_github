@@ -5,6 +5,8 @@ public class Flying : MonoBehaviour
     [SerializeField] GameObject manager;
     [SerializeField] float speed;
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
+    [SerializeField] float minX;
+    [SerializeField] float maxX;
     public bool controlling, direction;
     Rigidbody2D rb;
     bool left, right, up, down;
@@ -13,6 +15,7 @@ public class Flying : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         controlling = false;
+        direction = true;
     }
 
     // Update is called once per frame
@@ -47,7 +50,22 @@ public class Flying : MonoBehaviour
         }
         else
         {
-            rb.linearVelocity = new Vector2(0, 0);
+            if (!direction && transform.position.x < maxX)
+            {
+                right = true;
+                left = false;
+                GetComponent<SpriteRenderer>().flipX = true;
+            }
+            else if (direction && transform.position.x > minX)
+            {
+                left = true;
+                right = false;
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else
+            {
+                direction = !direction;
+            }
         }
     }
     public void FixedUpdate()
@@ -71,5 +89,9 @@ public class Flying : MonoBehaviour
     {
         controlling = false;
         rb.linearVelocity = new Vector2(0, 0);
+    }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!controlling) direction = !direction;
     }
 }
