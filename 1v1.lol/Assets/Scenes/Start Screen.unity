@@ -680,8 +680,8 @@ GameObject:
   m_Component:
   - component: {fileID: 581301282}
   - component: {fileID: 581301281}
-  - component: {fileID: 581301284}
   - component: {fileID: 581301283}
+  - component: {fileID: 581301284}
   m_Layer: 0
   m_Name: 228462_configure_256x256_0
   m_TagString: Untagged
@@ -855,9 +855,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 581301280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2235962b949ddef41a6695b0a0468a28, type: 3}
+  m_Script: {fileID: 11500000, guid: f7b72883ea00d934fbc81df88cbd87a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map1button: 0
+  settingsbutton: 1
+  startbutton: 0
+  settingsback: 0
+  selectback: 0
 --- !u!1 &785351386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,8 +1170,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1581338020}
   - component: {fileID: 1581338019}
-  - component: {fileID: 1581338021}
   - component: {fileID: 1581338022}
+  - component: {fileID: 1581338023}
   m_Layer: 0
   m_Name: start bg_0
   m_TagString: Untagged
@@ -1244,18 +1249,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1581338021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581338018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2577e35391d3b2b45b472ddae848815c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1581338022
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1302,6 +1295,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.76, y: 1.85}
   m_EdgeRadius: 0
+--- !u!114 &1581338023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581338018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b72883ea00d934fbc81df88cbd87a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map1button: 0
+  settingsbutton: 0
+  startbutton: 1
+  settingsback: 0
+  selectback: 0
 --- !u!1 &1633702897
 GameObject:
   m_ObjectHideFlags: 0
