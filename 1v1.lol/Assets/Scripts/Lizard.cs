@@ -18,6 +18,7 @@ public class Lizard : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         controlling = false;
+        direction = true;
         o = new GameObject();
     }
 
@@ -51,12 +52,12 @@ public class Lizard : MonoBehaviour
                 this.o = Instantiate(fireball, transform.position, Quaternion.identity);
                 if (direction)
                 {
-                    fireballSpeed = -2.5f;
+                    fireballSpeed = Random.Range(-5f, -1f);//-2.5f;
                     o.transform.position = new Vector2(transform.position.x - .4f, transform.position.y);
                 }
                 else
                 {
-                    fireballSpeed = 2.5f;
+                    fireballSpeed = Random.Range(1f, 5f);//2.5f;
                     o.transform.position = new Vector2(transform.position.x + .4f, transform.position.y);
                 }
                 o.GetComponent<Fireball>().enabled = true;
