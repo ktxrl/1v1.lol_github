@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Lizard : MonoBehaviour
@@ -6,12 +7,15 @@ public class Lizard : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     [SerializeField] GameObject fireball;
-    public bool controlling, direction;
-    int state;
-    float fireballSpeed;
+    [SerializeField] float minX;
+    [SerializeField] float maxX;
     GameObject o;
     Rigidbody2D rb;
     Animator animator;
+    public bool controlling, direction, shoot;
+    int state;
+    float fireballSpeed, idleTime;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -48,26 +52,47 @@ public class Lizard : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Keypad0))
             {
-                state = 2;
-                this.o = Instantiate(fireball, transform.position, Quaternion.identity);
-                if (direction)
-                {
-                    fireballSpeed = Random.Range(-5f, -1f);//-2.5f;
-                    o.transform.position = new Vector2(transform.position.x - .4f, transform.position.y);
-                }
-                else
-                {
-                    fireballSpeed = Random.Range(1f, 5f);//2.5f;
-                    o.transform.position = new Vector2(transform.position.x + .4f, transform.position.y);
-                }
-                o.GetComponent<Fireball>().enabled = true;
-                Invoke("DelayFireball", .25f);
-                //GameObject o = Instantiate(fireball, transform.position, Quaternion.identity);
+                Shoot();
             }
         }
         else
         {
-            rb.linearVelocity = new Vector2(0, 0);
+            idleTime += Time.deltaTime;
+            if (!direction && transform.position.x < maxX)
+            {
+                if (!shoot && idleTime <= 2f)
+                {
+                    state = 1;
+                    GetComponent<SpriteRenderer>().flipX = true;
+                    rb.linearVelocity = new Vector2(speed, rb.linearVelocityY);
+                }
+                else if (!shoot && idleTime != 0)
+                {
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+                    animator.SetInteger("State", 2);
+                    Shoot();
+                }
+
+            }
+            else if (direction && transform.position.x > minX)
+            {
+                if (!shoot && idleTime <= 2f)
+                {
+                    state = 1;
+                    GetComponent<SpriteRenderer>().flipX = false;
+                    rb.linearVelocity = new Vector2(-speed, rb.linearVelocityY);
+                }
+                else if (!shoot && idleTime != 0)
+                {
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+                    animator.SetInteger("State", 2);
+                    Shoot();
+                }
+            }
+            else
+            {
+                direction = !direction;
+            }
         }
         animator.SetInteger("State", state);
     }
@@ -87,5 +112,29 @@ public class Lizard : MonoBehaviour
         controlling = false;
         rb.linearVelocity = new Vector2(0, 0);
         animator.SetInteger("State", 0);
+        idleTime = 0;
+    }
+    public void Shoot()
+    {
+        shoot = true;
+        this.o = Instantiate(fireball, transform.position, Quaternion.identity);
+        if (direction)
+        {
+            fireballSpeed = Random.Range(-5f, -1f);//-2.5f;
+            o.transform.position = new Vector2(transform.position.x - .4f, transform.position.y);
+        }
+        else
+        {
+            fireballSpeed = Random.Range(1f, 5f);//2.5f;
+            o.transform.position = new Vector2(transform.position.x + .4f, transform.position.y);
+        }
+        o.GetComponent<Fireball>().enabled = true;
+        Invoke("DelayFireball", .25f);
+        idleTime = 0;
+        Invoke("ShootDelay", .75f);
+    }
+    public void ShootDelay()
+    {
+        shoot = false;
     }
 }
