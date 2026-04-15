@@ -48,8 +48,17 @@ public class TullyMonster67 : MonoBehaviour
         flying.GetComponent<Flying>().Deselect();
         skeleton.GetComponent<Skeleton>().Deselect();
     }
-    public void ChangeMainVolume(float volume)
+    public void ChangeMusicVolume(float volume)
     {
         Music.volume = volume;
     }
+    public void ChangeSFVolume(float volume)
+    {
+        Music.volume = volume;
+    }
+    public void ChangeMainVolume(float volume)
+    {
+        Music.volume = Music.volume * volume;
+    }
+
 }

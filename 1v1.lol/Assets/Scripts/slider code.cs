@@ -26,9 +26,20 @@ public class slidercode : MonoBehaviour
             {
                 volume = 1;
             }
+            manager.GetComponent<TullyMonster67>().ChangeMusicVolume(volume);
+        }
+        if (MV)
+        {
+            float volume = (transform.position.x + 6) / 12;
+            if (volume < 0) volume = 0;
+            if (volume > 1)
+            {
+                volume = 1;
+            }
             manager.GetComponent<TullyMonster67>().ChangeMainVolume(volume);
         }
-        
+
+
 
 
 
