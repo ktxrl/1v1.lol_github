@@ -8,6 +8,7 @@ public class Skeleton : MonoBehaviour
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     [SerializeField] float minX;
     [SerializeField] float maxX;
+    [SerializeField] GameObject selectArrow;
     public bool controlling, direction;
     Rigidbody2D rb;
     Animator animator;
@@ -18,6 +19,7 @@ public class Skeleton : MonoBehaviour
         animator = GetComponent<Animator>();
         controlling = false;
         direction = false;
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     // Update is called once per frame
@@ -73,10 +75,23 @@ public class Skeleton : MonoBehaviour
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
     }
+    public void Select()
+    {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
+        controlling = true;
+    }
     public void Deselect()
     {
         controlling = false;
         rb.linearVelocity = new Vector2(0, 0);
         animator.SetInteger("State", 0);
+    }
+    private void OnMouseOver()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

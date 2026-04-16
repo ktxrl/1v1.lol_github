@@ -9,6 +9,7 @@ public class Lizard : MonoBehaviour
     [SerializeField] GameObject fireball;
     [SerializeField] float minX;
     [SerializeField] float maxX;
+    [SerializeField] GameObject selectArrow;
     GameObject o;
     Rigidbody2D rb;
     Animator animator;
@@ -106,6 +107,11 @@ public class Lizard : MonoBehaviour
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
     }
+    public void Select()
+    {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
+        controlling = true;
+    }
     public void Deselect()
     {
         controlling = false;
@@ -136,5 +142,13 @@ public class Lizard : MonoBehaviour
     public void ShootDelay()
     {
         shoot = false;
+    }
+    private void OnMouseOver()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

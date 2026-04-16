@@ -7,6 +7,7 @@ public class Flying : MonoBehaviour
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     [SerializeField] float minX;
     [SerializeField] float maxX;
+    [SerializeField] GameObject selectArrow;
     public bool controlling, direction;
     Rigidbody2D rb;
     bool left, right, up, down;
@@ -87,6 +88,11 @@ public class Flying : MonoBehaviour
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
     }
+    public void Select()
+    {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
+        controlling = true;
+    }
     public void Deselect()
     {
         controlling = false;
@@ -95,5 +101,13 @@ public class Flying : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (!controlling) direction = !direction;
+    }
+    private void OnMouseOver()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
