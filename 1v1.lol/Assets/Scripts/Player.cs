@@ -99,10 +99,6 @@ public class Player : MonoBehaviour
         //    lives = 3;
         //    lifeText.text = "Lives: " + lives;
         //    door.GetComponent<Door>().Deactivate();
-        //    for (int i = 0; i < gems.Count; i++)
-        //    {
-        //        gems[i].SetActive(true);
-        //    }
         //}
     }
     public void UpdateState()
@@ -172,6 +168,11 @@ public class Player : MonoBehaviour
             //dieText.enabled = true;
             //dieText.text = "You Won! You collected " + gemsCount + " gems";
             //UpdateState();
+        }
+        else if (collision.gameObject.tag == "fireball")
+        {
+            transform.position = new Vector2(ogX, ogY);
+            Destroy(collision.gameObject);
         }
 
     }

@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEditor.Build.Content;
 using UnityEngine;
 
@@ -6,6 +8,7 @@ public class TullyMonster67 : MonoBehaviour
     [SerializeField] Flying flying;
     [SerializeField] Skeleton skeleton;
     [SerializeField] Lizard lizard;
+    [SerializeField] List<GameObject> platforms;
     public AudioSource Music;
     public static GameObject original;
 

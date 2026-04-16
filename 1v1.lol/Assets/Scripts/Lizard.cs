@@ -50,7 +50,7 @@ public class Lizard : MonoBehaviour
                 rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
                 state = 0;
             }
-            if (Input.GetKeyDown(KeyCode.Keypad0))
+            if (Input.GetKeyDown(KeyCode.RightShift))
             {
                 Shoot();
             }
@@ -69,7 +69,6 @@ public class Lizard : MonoBehaviour
                 else if (!shoot && idleTime != 0)
                 {
                     rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
-                    animator.SetInteger("State", 2);
                     Shoot();
                 }
 
@@ -85,7 +84,6 @@ public class Lizard : MonoBehaviour
                 else if (!shoot && idleTime != 0)
                 {
                     rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
-                    animator.SetInteger("State", 2);
                     Shoot();
                 }
             }
@@ -116,6 +114,7 @@ public class Lizard : MonoBehaviour
     }
     public void Shoot()
     {
+        animator.SetInteger("state", 2);
         shoot = true;
         this.o = Instantiate(fireball, transform.position, Quaternion.identity);
         if (direction)
