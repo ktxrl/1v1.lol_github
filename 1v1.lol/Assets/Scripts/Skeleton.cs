@@ -66,10 +66,12 @@ public class Skeleton : MonoBehaviour
     }
     public void OnMouseDown()
     {
+        //controlling = true;
+        //if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
+        //else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
+        //else manager.GetComponent<TullyMonster67>().LizardSelect();
+        manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
-        if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        else manager.GetComponent<TullyMonster67>().LizardSelect();
     }
     public void Deselect()
     {

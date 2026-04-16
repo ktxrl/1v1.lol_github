@@ -100,10 +100,11 @@ public class Lizard : MonoBehaviour
     }
     public void OnMouseDown()
     {
+        //if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
+        //else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
+        //else manager.GetComponent<TullyMonster67>().LizardSelect();
+        manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
-        if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        else manager.GetComponent<TullyMonster67>().LizardSelect();
     }
     public void Deselect()
     {
@@ -114,7 +115,7 @@ public class Lizard : MonoBehaviour
     }
     public void Shoot()
     {
-        animator.SetInteger("state", 2);
+        animator.SetTrigger("Shoot");
         shoot = true;
         this.o = Instantiate(fireball, transform.position, Quaternion.identity);
         if (direction)

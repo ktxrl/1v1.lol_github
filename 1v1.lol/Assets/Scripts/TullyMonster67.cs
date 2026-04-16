@@ -34,22 +34,36 @@ public class TullyMonster67 : MonoBehaviour
     {
         
     }
-    public void FlyingSelect()
-    {
+    //public void FlyingSelect()
+    //{
 
+    //    skeleton.GetComponent<Skeleton>().Deselect();
+    //    lizard.GetComponent<Lizard>().Deselect();
+    //}
+    //public void SkeletonSelect()
+    //{
+
+    //    flying.GetComponent<Flying>().Deselect();
+    //    lizard.GetComponent<Lizard>().Deselect();
+    //}
+    //public void LizardSelect()
+    //{
+    //    flying.GetComponent<Flying>().Deselect();
+    //    skeleton.GetComponent<Skeleton>().Deselect();
+    //}
+    //public void PlatformSelect()
+    //{
+    //    DeselectAll();
+    //}
+    public void DeselectAll()
+    {
+        flying.GetComponent<Flying>().Deselect();
         skeleton.GetComponent<Skeleton>().Deselect();
         lizard.GetComponent<Lizard>().Deselect();
-    }
-    public void SkeletonSelect()
-    {
-
-        flying.GetComponent<Flying>().Deselect();
-        lizard.GetComponent<Lizard>().Deselect();
-    }
-    public void LizardSelect()
-    {
-        flying.GetComponent<Flying>().Deselect();
-        skeleton.GetComponent<Skeleton>().Deselect();
+        for (int i = 0; i < platforms.Count; i++)
+        {
+            platforms[i].GetComponent<Platform>().Deselect();
+        }
     }
     public void ChangeMusicVolume(float volume)
     {
