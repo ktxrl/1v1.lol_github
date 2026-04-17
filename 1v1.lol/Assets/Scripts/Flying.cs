@@ -11,15 +11,15 @@ public class Flying : MonoBehaviour
     public bool controlling, direction;
     Rigidbody2D rb;
     bool left, right, up, down;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         controlling = false;
         direction = true;
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (controlling)
@@ -48,6 +48,7 @@ public class Flying : MonoBehaviour
                 down = true;
             }
             else down = false;
+            if (Input.GetKeyDown(KeyCode.RightControl)) Deselect();
         }
         else
         {
@@ -81,10 +82,6 @@ public class Flying : MonoBehaviour
     }
     public void OnMouseDown()
     {
-        //controlling = true;
-        //if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        //else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        //else manager.GetComponent<TullyMonster67>().LizardSelect();
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
     }
@@ -97,6 +94,7 @@ public class Flying : MonoBehaviour
     {
         controlling = false;
         rb.linearVelocity = new Vector2(0, 0);
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -108,6 +106,7 @@ public class Flying : MonoBehaviour
     }
     private void OnMouseExit()
     {
-        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+        if (!controlling)
+            selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

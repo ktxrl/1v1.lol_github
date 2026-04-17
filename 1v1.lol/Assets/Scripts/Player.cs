@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject comboBar;
     Rigidbody2D rb;
     Animator animator;
-    bool left, right, roll, die, direction, attack; //false = left, true = right
-    float time, rolltime, rollcooldown, ogX, ogY, lastAttack, comboDelay, attackTime;
+    bool left, right, roll, die, direction, attack, doubleJump; //false = left, true = right
+    float time, rolltime, rollcooldown, ogX, ogY, lastAttack, comboDelay, attackTime, attackCooldown;
     int coinCount, lives, attackIndex;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = attack1, 6 = attack2, 7 = attack3
@@ -32,11 +32,13 @@ public class Player : MonoBehaviour
         ogY = transform.position.y;
         die = false;
         direction = true;
+        doubleJump = true;
         coinCount = 0;
         lives = 3;
         comboDelay = 1f;
         attackTime = 0;
         attackIndex = 0;
+        attackCooldown = 0;
     }
 
     // Update is called once per frame
@@ -65,11 +67,17 @@ public class Player : MonoBehaviour
             roll = true;
             rollcooldown = 0;
         }
-        //if (IsGround() && !Input.GetButton("Jump")) doubleJump = false;
-        if (Input.GetKeyDown(KeyCode.W) && IsGround() && !roll && !die)
+        if (Input.GetKeyDown(KeyCode.W) && !roll && !die)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-
+            if (IsGround())
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+            }
+            else if (doubleJump)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+                doubleJump = false;
+            }
         }
         UpdateState();
         Debug.Log(attackIndex);
@@ -83,7 +91,8 @@ public class Player : MonoBehaviour
                 attackTime = 0;
             }
         }
-        if (Input.GetKeyDown(KeyCode.V) && !roll && !die)
+        attackCooldown += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.V) && !roll && !die && attackCooldown > .5f)
         {
             attack = true;
             lastAttack = Time.time;
@@ -92,6 +101,7 @@ public class Player : MonoBehaviour
             comboBar.GetComponent<AttackBar>().ResetCombo();
             attackIndex++;
             if (attackIndex > 2) attackIndex = 0;
+            attackCooldown = 0;
         }
         //if (die && Input.GetKeyDown(KeyCode.R))
         //if (Input.GetKeyDown(KeyCode.R))
@@ -110,7 +120,6 @@ public class Player : MonoBehaviour
     {
         int state;
         if (roll) state = 4;
-        //else if (attack && attackIndex != 0) state = attackIndex + 4;
         else if (rb.linearVelocityY <= 0 && !IsGround()) state = 3;
         else if (rb.linearVelocityY > 0 && !IsGround()) state = 2;
         else if (IsGround() && Math.Abs(rb.linearVelocityX) > 0.1f) state = 1;
@@ -176,10 +185,14 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.tag == "fireball")
         {
-            transform.position = new Vector2(ogX, ogY);
+            animator.SetTrigger("Hurt");
+            //transform.position = new Vector2(ogX, ogY);
             Destroy(collision.gameObject);
         }
-
+        else if (collision.gameObject.tag == "doublejump")
+        {
+            doubleJump = true;
+        }
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -215,7 +228,8 @@ public class Player : MonoBehaviour
             //}
             //else
             //{
-                transform.position = new Vector2(ogX, ogY);
+            animator.SetTrigger("Hurt");
+                //transform.position = new Vector2(ogX, ogY);
             //}
         }
     }

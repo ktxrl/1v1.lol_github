@@ -15,9 +15,8 @@ public class Lizard : MonoBehaviour
     Animator animator;
     public bool controlling, direction, shoot;
     int state;
-    float fireballSpeed, idleTime;
+    float fireballSpeed, idleTime, shootCooldown;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,9 +24,9 @@ public class Lizard : MonoBehaviour
         controlling = false;
         direction = true;
         o = new GameObject();
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (controlling) // state 0: idle, 1: move, 2: shoot
@@ -51,10 +50,13 @@ public class Lizard : MonoBehaviour
                 rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
                 state = 0;
             }
-            if (Input.GetKeyDown(KeyCode.RightShift))
+            if (Input.GetKeyDown(KeyCode.RightShift) && shootCooldown > 1f)
             {
                 Shoot();
+                shootCooldown = 0;
             }
+            shootCooldown += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.RightControl)) Deselect();
         }
         else
         {
@@ -101,9 +103,6 @@ public class Lizard : MonoBehaviour
     }
     public void OnMouseDown()
     {
-        //if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        //else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        //else manager.GetComponent<TullyMonster67>().LizardSelect();
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
     }
@@ -111,6 +110,7 @@ public class Lizard : MonoBehaviour
     {
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
+        shoot = false;
     }
     public void Deselect()
     {
@@ -118,6 +118,7 @@ public class Lizard : MonoBehaviour
         rb.linearVelocity = new Vector2(0, 0);
         animator.SetInteger("State", 0);
         idleTime = 0;
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void Shoot()
     {
@@ -149,6 +150,7 @@ public class Lizard : MonoBehaviour
     }
     private void OnMouseExit()
     {
-        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+        if (!controlling)
+            selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

@@ -12,7 +12,7 @@ public class Skeleton : MonoBehaviour
     public bool controlling, direction;
     Rigidbody2D rb;
     Animator animator;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,7 +22,6 @@ public class Skeleton : MonoBehaviour
         selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (controlling)
@@ -46,6 +45,7 @@ public class Skeleton : MonoBehaviour
                 rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
                 animator.SetInteger("State", 0);
             }
+            if (Input.GetKeyDown(KeyCode.RightControl)) Deselect();
         }
         else
         {
@@ -68,10 +68,6 @@ public class Skeleton : MonoBehaviour
     }
     public void OnMouseDown()
     {
-        //controlling = true;
-        //if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        //else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        //else manager.GetComponent<TullyMonster67>().LizardSelect();
         manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
     }
@@ -85,6 +81,7 @@ public class Skeleton : MonoBehaviour
         controlling = false;
         rb.linearVelocity = new Vector2(0, 0);
         animator.SetInteger("State", 0);
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
     private void OnMouseOver()
     {
@@ -92,6 +89,7 @@ public class Skeleton : MonoBehaviour
     }
     private void OnMouseExit()
     {
-        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+        if (!controlling)
+            selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
