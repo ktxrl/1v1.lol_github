@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     float time, rolltime, rollcooldown, ogX, ogY, lastAttack, comboDelay, attackTime, attackCooldown;
     int coinCount, lives, attackIndex;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = attack1, 6 = attack2, 7 = attack3
+    void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = walk
     { // C = roll, V = attack
         rb = GetComponent<Rigidbody2D>();
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -62,6 +62,8 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.D) && !roll) right = true;
         if (Input.GetKeyUp(KeyCode.A)) left = false;
         if (Input.GetKeyUp(KeyCode.D)) right = false;
+        if (Input.GetKeyDown(KeyCode.LeftShift)) speed = 3f; 
+        if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 1.5f;
         if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
             roll = true;
@@ -122,7 +124,11 @@ public class Player : MonoBehaviour
         if (roll) state = 4;
         else if (rb.linearVelocityY <= 0 && !IsGround()) state = 3;
         else if (rb.linearVelocityY > 0 && !IsGround()) state = 2;
-        else if (IsGround() && Math.Abs(rb.linearVelocityX) > 0.1f) state = 1;
+        else if (IsGround() && Math.Abs(rb.linearVelocityX) > 0.1f)
+        {
+            if (speed == 3f) state = 1;
+            else state = 5;
+        }
         else state = 0;
         if (die) state = 0;
         animator.SetInteger("State", state);

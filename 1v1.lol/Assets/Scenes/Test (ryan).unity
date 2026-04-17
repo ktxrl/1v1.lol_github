@@ -951,7 +951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 9
-  speed: 3
+  speed: 1.5
   coins: []
   timeText: {fileID: 0}
   coinText: {fileID: 0}
@@ -2408,8 +2408,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragOrigin: {x: 0, y: 0, z: 0}
-  cam: {fileID: 0}
   dragging: 0
+  zoomSpeed: 5
+  minSize: 2
+  maxSize: 10
 --- !u!1 &1362517055
 GameObject:
   m_ObjectHideFlags: 0
