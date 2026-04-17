@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,13 @@ public class Player : MonoBehaviour
     [SerializeField] Text dieText;
     [SerializeField] Text lifeText;
     [SerializeField] GameObject comboBar;
+    [SerializeField] Image staminaBar;
+    [SerializeField] float stamina;
+    [SerializeField] float maxStamina;
+    [SerializeField] float runCost;
+    [SerializeField] float attackCost;
+    [SerializeField] float rollCost;
+
     Rigidbody2D rb;
     Animator animator;
     bool left, right, roll, die, direction, attack, doubleJump; //false = left, true = right
@@ -39,6 +47,7 @@ public class Player : MonoBehaviour
         attackTime = 0;
         attackIndex = 0;
         attackCooldown = 0;
+        staminaBar.fillAmount = maxStamina;
     }
 
     // Update is called once per frame
@@ -62,7 +71,21 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.D) && !roll) right = true;
         if (Input.GetKeyUp(KeyCode.A)) left = false;
         if (Input.GetKeyUp(KeyCode.D)) right = false;
-        if (Input.GetKeyDown(KeyCode.LeftShift)) speed = 3f; 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (stamina >= runCost * Time.deltaTime)
+            {
+                stamina -= runCost * Time.deltaTime;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                speed = 3f;
+            }
+            else
+            {
+                //signal unable to run
+                speed = 1.5f;
+            }
+        } 
         if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 1.5f;
         if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
@@ -96,14 +119,25 @@ public class Player : MonoBehaviour
         attackCooldown += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.V) && !roll && !die && attackCooldown > .5f)
         {
-            attack = true;
-            lastAttack = Time.time;
-            animator.SetTrigger("Attack");
-            animator.SetInteger("AttackIndex", attackIndex);
-            comboBar.GetComponent<AttackBar>().ResetCombo();
-            attackIndex++;
-            if (attackIndex > 2) attackIndex = 0;
-            attackCooldown = 0;
+            if (stamina >= attackCost)
+            {
+                stamina -= attackCost;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+
+                attack = true;
+                lastAttack = Time.time;
+                animator.SetTrigger("Attack");
+                animator.SetInteger("AttackIndex", attackIndex);
+                comboBar.GetComponent<AttackBar>().ResetCombo();
+                attackIndex++;
+                if (attackIndex > 2) attackIndex = 0;
+                attackCooldown = 0;
+            }
+            else
+            {
+                //signal unable to attack
+            }
         }
         //if (die && Input.GetKeyDown(KeyCode.R))
         //if (Input.GetKeyDown(KeyCode.R))
