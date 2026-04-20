@@ -13,6 +13,7 @@ public class TullyMonster67 : MonoBehaviour
     public AudioSource Music;
     public static GameObject original;
     bool controlling = false;
+    float controlDelay = 2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,7 +35,10 @@ public class TullyMonster67 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (controlling)
+        {
+            controlDelay += Time.deltaTime;
+        }
     }
     public void DeselectAll()
     {
@@ -45,8 +49,16 @@ public class TullyMonster67 : MonoBehaviour
         {
             if (platforms[i] != null) platforms[i].GetComponent<Platform>().Deselect();
         }
+        controlDelay = 0;
     }
-
+    public void Control(bool o)
+    {
+        controlling = o;
+    }
+    public bool GetControl()
+    {
+        return controlDelay > 1f;
+    }
     public void ChangeMusicVolume(float volume)
     {
         Music.volume = volume;

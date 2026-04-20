@@ -21,6 +21,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] float runCost;
     [SerializeField] float attackCost;
     [SerializeField] float rollCost;
+    [SerializeField] float jumpCost;
     [SerializeField] float chargeRate;
 
     private Coroutine recharge;
@@ -90,25 +91,44 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             else
             {
                 //signal unable to run
-                speed = 1.5f;
+                speed = 2f;
             }
         } 
-        if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 1.5f;
+        if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 2f;
         if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
-            roll = true;
-            rollcooldown = 0;
+            if (stamina >= rollCost)
+            {
+                stamina -= rollCost;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
+                roll = true;
+                rollcooldown = 0;
+            }
+            else
+            {
+                //signal unable to roll
+            }
         }
         if (Input.GetKeyDown(KeyCode.W) && !roll && !die)
         {
             if (IsGround())
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-            }
-            else if (doubleJump)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
                 doubleJump = false;
+            }
+            else if (stamina >= jumpCost && !doubleJump)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce/1.3f);
+                doubleJump = true;
+
+                stamina -= jumpCost;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
             }
         }
         UpdateState();

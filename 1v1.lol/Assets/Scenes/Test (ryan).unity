@@ -191,7 +191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -4900}
+  m_AnchoredPosition: {x: -300, y: -490}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &65966770
@@ -315,7 +315,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -4900}
+  m_AnchoredPosition: {x: 300, y: -490}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &206756346
@@ -390,7 +390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -4900}
+  m_AnchoredPosition: {x: 300, y: -490}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &218765106
@@ -1188,7 +1188,8 @@ MonoBehaviour:
   maxStamina: 100
   runCost: 25
   attackCost: 25
-  rollCost: 25
+  rollCost: 15
+  jumpCost: 15
   chargeRate: 4
 --- !u!212 &377415096
 SpriteRenderer:
@@ -2961,7 +2962,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -4900}
+  m_AnchoredPosition: {x: -300, y: -490}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1579981569
