@@ -21,15 +21,15 @@ public class TullyMonster67 : MonoBehaviour
         {
             original = gameObject;
         }
-        if(gameObject != original) 
-           {
-                Destroy(gameObject);
+        if (gameObject != original)
+        {
+            Destroy(gameObject);
         }
     }
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void FlyingSelect()
     {
@@ -52,13 +52,13 @@ public class TullyMonster67 : MonoBehaviour
     {
         Music.volume = volume;
     }
-    public void ChangeSFVolume(float volume)
+    public void ChangeSEVolume(float volume)
     {
         Music.volume = volume;
     }
     public void ChangeMainVolume(float volume)
     {
-        Music.volume = Music.volume * volume;
-    }
+        AudioListener.volume = volume;
 
+    }
 }
