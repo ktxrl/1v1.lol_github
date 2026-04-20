@@ -38,6 +38,16 @@ public class slidercode : MonoBehaviour
             }
             manager.GetComponent<TullyMonster67>().ChangeMainVolume(volume);
         }
+        if (SE)
+        {
+            float volume = (transform.position.x + 6) / 12;
+            if (volume < 0) volume = 0;
+            if (volume > 1)
+            {
+                volume = 1;
+            }
+            manager.GetComponent<TullyMonster67>().ChangeSEVolume(volume);
+        }
 
 
 
