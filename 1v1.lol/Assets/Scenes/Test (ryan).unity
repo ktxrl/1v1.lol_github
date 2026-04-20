@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 9690642}
   - component: {fileID: 9690641}
   m_Layer: 5
-  m_Name: Combo
+  m_Name: C
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,7 +191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -490}
+  m_AnchoredPosition: {x: -300, y: -4900}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &65966770
@@ -315,7 +315,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -490}
+  m_AnchoredPosition: {x: 300, y: -4900}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &206756346
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 218765107}
   - component: {fileID: 218765106}
   m_Layer: 5
-  m_Name: Stamina
+  m_Name: S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -390,7 +390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -490}
+  m_AnchoredPosition: {x: 300, y: -4900}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &218765106
@@ -2480,7 +2480,7 @@ GameObject:
   - component: {fileID: 1158081136}
   - component: {fileID: 1158081135}
   m_Layer: 5
-  m_Name: Canvas - Combo
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2939,7 +2939,7 @@ GameObject:
   - component: {fileID: 1579981570}
   - component: {fileID: 1579981569}
   m_Layer: 5
-  m_Name: Combo (1)
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2961,7 +2961,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -490}
+  m_AnchoredPosition: {x: -300, y: -4900}
   m_SizeDelta: {x: 217.67, y: 46.03}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1579981569
@@ -3847,7 +3847,7 @@ GameObject:
   - component: {fileID: 1956134751}
   - component: {fileID: 1956134750}
   m_Layer: 5
-  m_Name: Canvas - Stamina
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
