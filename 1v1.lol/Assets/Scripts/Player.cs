@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour // double jump uses stamina, add powerups (for stamina?)
 {
     [SerializeField] float jumpForce;
     [SerializeField] float speed;
@@ -12,13 +14,24 @@ public class Player : MonoBehaviour
     [SerializeField] Text coinText;
     [SerializeField] Text dieText;
     [SerializeField] Text lifeText;
+    [SerializeField] GameObject comboBar;
+    [SerializeField] Image staminaBar;
+    [SerializeField] float stamina;
+    [SerializeField] float maxStamina;
+    [SerializeField] float runCost;
+    [SerializeField] float attackCost;
+    [SerializeField] float rollCost;
+    [SerializeField] float chargeRate;
+
+    private Coroutine recharge;
+
     Rigidbody2D rb;
     Animator animator;
-    bool left, right, roll, die, direction, attack; //false = left, true = right
-    float time, rolltime, rollcooldown, ogX, ogY, lastAttack, comboDelay, attackTime;
-    int coinCount, lives, combo;
+    bool left, right, roll, die, direction, attack, doubleJump; //false = left, true = right
+    float time, rolltime, rollcooldown, ogX, ogY, lastAttack, comboDelay, attackTime, attackCooldown;
+    int coinCount, lives, attackIndex;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = attack1, 6 = attack2, 7 = attack3
+    void Start() // 0 = idle, 1 = running, 2 = jumping, 3 = falling, 4 = roll, 5 = walk
     { // C = roll, V = attack
         rb = GetComponent<Rigidbody2D>();
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -31,10 +44,14 @@ public class Player : MonoBehaviour
         ogY = transform.position.y;
         die = false;
         direction = true;
+        doubleJump = true;
         coinCount = 0;
         lives = 3;
-        comboDelay = 2f;
+        comboDelay = 1f;
         attackTime = 0;
+        attackIndex = 0;
+        attackCooldown = 0;
+        staminaBar.fillAmount = maxStamina;
     }
 
     // Update is called once per frame
@@ -58,26 +75,45 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.D) && !roll) right = true;
         if (Input.GetKeyUp(KeyCode.A)) left = false;
         if (Input.GetKeyUp(KeyCode.D)) right = false;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (stamina >= runCost * Time.deltaTime)
+            {
+                stamina -= runCost * Time.deltaTime;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
+
+                speed = 3f;
+            }
+            else
+            {
+                //signal unable to run
+                speed = 1.5f;
+            }
+        } 
+        if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 1.5f;
         if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
             roll = true;
             rollcooldown = 0;
         }
-        //if (IsGround() && !Input.GetButton("Jump")) doubleJump = false;
-        if (Input.GetKeyDown(KeyCode.W) && IsGround() && !roll && !die)
+        if (Input.GetKeyDown(KeyCode.W) && !roll && !die)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-
+            if (IsGround())
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+            }
+            else if (doubleJump)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+                doubleJump = false;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.V) && !roll && !die)
-        {
-            attack = true;
-            lastAttack = Time.time;
-            combo++;
-            if (combo > 3) combo = 1;
-        }
-        Debug.Log(combo);
-        if (Time.time - lastAttack > comboDelay) combo = 0;
+        UpdateState();
+        Debug.Log(attackIndex);
+        if (Time.time - lastAttack > comboDelay) attackIndex = 0;
         if (attack)
         {
             attackTime += Time.deltaTime;
@@ -87,7 +123,31 @@ public class Player : MonoBehaviour
                 attackTime = 0;
             }
         }
-        UpdateState();
+        attackCooldown += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.V) && !roll && !die && attackCooldown > .5f)
+        {
+            if (stamina >= attackCost)
+            {
+                stamina -= attackCost;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
+
+                attack = true;
+                lastAttack = Time.time;
+                animator.SetTrigger("Attack");
+                animator.SetInteger("AttackIndex", attackIndex);
+                comboBar.GetComponent<AttackBar>().ResetCombo();
+                attackIndex++;
+                if (attackIndex > 2) attackIndex = 0;
+                attackCooldown = 0;
+            }
+            else
+            {
+                //signal unable to attack
+            }
+        }
         //if (die && Input.GetKeyDown(KeyCode.R))
         //if (Input.GetKeyDown(KeyCode.R))
         //{
@@ -99,20 +159,19 @@ public class Player : MonoBehaviour
         //    lives = 3;
         //    lifeText.text = "Lives: " + lives;
         //    door.GetComponent<Door>().Deactivate();
-        //    for (int i = 0; i < gems.Count; i++)
-        //    {
-        //        gems[i].SetActive(true);
-        //    }
         //}
     }
     public void UpdateState()
     {
         int state;
         if (roll) state = 4;
-        else if (attack && combo != 0) state = combo + 4;
         else if (rb.linearVelocityY <= 0 && !IsGround()) state = 3;
         else if (rb.linearVelocityY > 0 && !IsGround()) state = 2;
-        else if (IsGround() && Math.Abs(rb.linearVelocityX) > 0.1f) state = 1;
+        else if (IsGround() && Math.Abs(rb.linearVelocityX) > 0.1f)
+        {
+            if (speed == 3f) state = 1;
+            else state = 5;
+        }
         else state = 0;
         if (die) state = 0;
         animator.SetInteger("State", state);
@@ -173,7 +232,16 @@ public class Player : MonoBehaviour
             //dieText.text = "You Won! You collected " + gemsCount + " gems";
             //UpdateState();
         }
-
+        else if (collision.gameObject.tag == "fireball")
+        {
+            animator.SetTrigger("Hurt");
+            //transform.position = new Vector2(ogX, ogY);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "doublejump")
+        {
+            doubleJump = true;
+        }
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -209,8 +277,20 @@ public class Player : MonoBehaviour
             //}
             //else
             //{
-                transform.position = new Vector2(ogX, ogY);
+            animator.SetTrigger("Hurt");
+                //transform.position = new Vector2(ogX, ogY);
             //}
+        }
+    }
+    private IEnumerator RechargeStamina()
+    {
+        yield return new WaitForSeconds(1.5f);
+        while (stamina < maxStamina)
+        {
+            stamina += chargeRate / 10f;
+            if (stamina > maxStamina) stamina = maxStamina;
+            staminaBar.fillAmount = stamina / maxStamina;
+            yield return new WaitForSeconds(.01f);
         }
     }
 }

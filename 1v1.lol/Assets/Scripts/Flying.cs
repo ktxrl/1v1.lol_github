@@ -7,18 +7,19 @@ public class Flying : MonoBehaviour
     [SerializeField] int enemy; //0 = flying, 1 = skeleton, 2 = lizard
     [SerializeField] float minX;
     [SerializeField] float maxX;
+    [SerializeField] GameObject selectArrow;
     public bool controlling, direction;
     Rigidbody2D rb;
     bool left, right, up, down;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         controlling = false;
         direction = true;
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (controlling)
@@ -47,6 +48,7 @@ public class Flying : MonoBehaviour
                 down = true;
             }
             else down = false;
+            if (Input.GetKeyDown(KeyCode.RightControl)) Deselect();
         }
         else
         {
@@ -80,18 +82,31 @@ public class Flying : MonoBehaviour
     }
     public void OnMouseDown()
     {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
-        if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        else manager.GetComponent<TullyMonster67>().LizardSelect();
+    }
+    public void Select()
+    {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
+        controlling = true;
     }
     public void Deselect()
     {
         controlling = false;
         rb.linearVelocity = new Vector2(0, 0);
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (!controlling) direction = !direction;
+    }
+    private void OnMouseOver()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        if (!controlling)
+            selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

@@ -9,14 +9,14 @@ public class Lizard : MonoBehaviour
     [SerializeField] GameObject fireball;
     [SerializeField] float minX;
     [SerializeField] float maxX;
+    [SerializeField] GameObject selectArrow;
     GameObject o;
     Rigidbody2D rb;
     Animator animator;
     public bool controlling, direction, shoot;
     int state;
-    float fireballSpeed, idleTime;
+    float fireballSpeed, idleTime, shootCooldown;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,9 +24,9 @@ public class Lizard : MonoBehaviour
         controlling = false;
         direction = true;
         o = new GameObject();
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (controlling) // state 0: idle, 1: move, 2: shoot
@@ -50,10 +50,13 @@ public class Lizard : MonoBehaviour
                 rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
                 state = 0;
             }
-            if (Input.GetKeyDown(KeyCode.Keypad0))
+            if (Input.GetKeyDown(KeyCode.RightShift) && shootCooldown > 1f)
             {
                 Shoot();
+                shootCooldown = 0;
             }
+            shootCooldown += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.RightControl)) Deselect();
         }
         else
         {
@@ -69,7 +72,6 @@ public class Lizard : MonoBehaviour
                 else if (!shoot && idleTime != 0)
                 {
                     rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
-                    animator.SetInteger("State", 2);
                     Shoot();
                 }
 
@@ -85,7 +87,6 @@ public class Lizard : MonoBehaviour
                 else if (!shoot && idleTime != 0)
                 {
                     rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
-                    animator.SetInteger("State", 2);
                     Shoot();
                 }
             }
@@ -102,10 +103,14 @@ public class Lizard : MonoBehaviour
     }
     public void OnMouseDown()
     {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
         controlling = true;
-        if (enemy == 0) manager.GetComponent<TullyMonster67>().FlyingSelect();
-        else if (enemy == 1) manager.GetComponent<TullyMonster67>().SkeletonSelect();
-        else manager.GetComponent<TullyMonster67>().LizardSelect();
+    }
+    public void Select()
+    {
+        manager.GetComponent<TullyMonster67>().DeselectAll();
+        controlling = true;
+        shoot = false;
     }
     public void Deselect()
     {
@@ -113,9 +118,11 @@ public class Lizard : MonoBehaviour
         rb.linearVelocity = new Vector2(0, 0);
         animator.SetInteger("State", 0);
         idleTime = 0;
+        selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void Shoot()
     {
+        animator.SetTrigger("Shoot");
         shoot = true;
         this.o = Instantiate(fireball, transform.position, Quaternion.identity);
         if (direction)
@@ -136,5 +143,14 @@ public class Lizard : MonoBehaviour
     public void ShootDelay()
     {
         shoot = false;
+    }
+    private void OnMouseOver()
+    {
+        selectArrow.GetComponent<SpriteRenderer>().enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        if (!controlling)
+            selectArrow.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

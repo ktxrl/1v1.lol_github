@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - enemy
+  - fireball
+  - door
+  - player
   layers:
   - Default
   - TransparentFX
@@ -12,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Enemy
+  - Select Radius
   - 
   - 
   - 
