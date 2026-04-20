@@ -2201,6 +2201,8 @@ MonoBehaviour:
   flying: {fileID: 0}
   skeleton: {fileID: 0}
   lizard: {fileID: 0}
+  platforms: []
+  cameraP2: {fileID: 0}
   Music: {fileID: 653916639}
 --- !u!4 &1009819631
 Transform:
