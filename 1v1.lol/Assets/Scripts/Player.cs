@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour // double jump uses stamina, add powerups (for stamina?)
 {
     [SerializeField] float jumpForce;
     [SerializeField] float speed;
@@ -20,6 +21,9 @@ public class Player : MonoBehaviour
     [SerializeField] float runCost;
     [SerializeField] float attackCost;
     [SerializeField] float rollCost;
+    [SerializeField] float chargeRate;
+
+    private Coroutine recharge;
 
     Rigidbody2D rb;
     Animator animator;
@@ -78,6 +82,9 @@ public class Player : MonoBehaviour
                 stamina -= runCost * Time.deltaTime;
                 if (stamina < 0) stamina = 0;
                 staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
+
                 speed = 3f;
             }
             else
@@ -124,6 +131,8 @@ public class Player : MonoBehaviour
                 stamina -= attackCost;
                 if (stamina < 0) stamina = 0;
                 staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
 
                 attack = true;
                 lastAttack = Time.time;
@@ -271,6 +280,17 @@ public class Player : MonoBehaviour
             animator.SetTrigger("Hurt");
                 //transform.position = new Vector2(ogX, ogY);
             //}
+        }
+    }
+    private IEnumerator RechargeStamina()
+    {
+        yield return new WaitForSeconds(1.5f);
+        while (stamina < maxStamina)
+        {
+            stamina += chargeRate / 10f;
+            if (stamina > maxStamina) stamina = maxStamina;
+            staminaBar.fillAmount = stamina / maxStamina;
+            yield return new WaitForSeconds(.01f);
         }
     }
 }
