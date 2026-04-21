@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 9690642}
   - component: {fileID: 9690641}
   m_Layer: 5
-  m_Name: C
+  m_Name: Combo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 218765107}
   - component: {fileID: 218765106}
   m_Layer: 5
-  m_Name: S
+  m_Name: Stamina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1176,7 +1176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 9
-  speed: 1.5
+  speed: 3
   coins: []
   timeText: {fileID: 0}
   coinText: {fileID: 0}
@@ -1187,7 +1187,7 @@ MonoBehaviour:
   stamina: 100
   maxStamina: 100
   runCost: 25
-  attackCost: 50
+  attackCost: 15
   rollCost: 15
   jumpCost: 15
   chargeRate: 4

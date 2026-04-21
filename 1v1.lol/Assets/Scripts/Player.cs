@@ -9,6 +9,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
                                     // fireboy watergirl lever/door
                                     // spikes
                                     // adding tab to select through monsters,
+                                    // giving enemy powerups
 {
     [SerializeField] float jumpForce;
     [SerializeField] float speed;
@@ -89,15 +90,15 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
                 if (recharge != null) StopCoroutine(recharge);
                 recharge = StartCoroutine(RechargeStamina());
 
-                speed = 3f;
+                speed = 4f;
             }
             else
             {
                 //signal unable to run
-                speed = 2f;
+                speed = 2.5f;
             }
         } 
-        if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 2f;
+        if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 2.5f;
         if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
             if (stamina >= rollCost)
