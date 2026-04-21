@@ -11,6 +11,7 @@ public class TullyMonster67 : MonoBehaviour
     [SerializeField] List<GameObject> platforms;
     [SerializeField] Camera cameraP2;
     public AudioSource Music;
+    public AudioSource finalslash;
     public static GameObject original;
     float controlDelay = 2f;
 
@@ -34,7 +35,12 @@ public class TullyMonster67 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //finalslash = AudioSource.("sword slash final");
         controlDelay += Time.deltaTime;
+        if(Input.GetKeyDown(KeyCode.H)) 
+            {
+                finalslash.Play();
+            }
     }
     public void DeselectAll()
     {
@@ -61,11 +67,12 @@ public class TullyMonster67 : MonoBehaviour
     }
     public void ChangeSEVolume(float volume)
     {
-        Music.volume = volume;
+        finalslash.volume = volume;
     }
     public void ChangeMainVolume(float volume)
     {
         AudioListener.volume = volume;
 
     }
+    
 }
