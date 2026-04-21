@@ -68,13 +68,12 @@ public class Skeleton : MonoBehaviour
     }
     public void OnMouseDown()
     {
-        manager.GetComponent<TullyMonster67>().DeselectAll();
-        controlling = true;
-    }
-    public void Select()
-    {
-        manager.GetComponent<TullyMonster67>().DeselectAll();
-        controlling = true;
+        if (manager.GetComponent<TullyMonster67>().GetControl())
+        {
+            manager.GetComponent<TullyMonster67>().DeselectAll();
+            controlling = true;
+            manager.GetComponent<TullyMonster67>().ResetControl();
+        }
     }
     public void Deselect()
     {

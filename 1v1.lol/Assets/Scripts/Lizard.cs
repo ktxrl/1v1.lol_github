@@ -103,14 +103,13 @@ public class Lizard : MonoBehaviour
     }
     public void OnMouseDown()
     {
-        manager.GetComponent<TullyMonster67>().DeselectAll();
-        controlling = true;
-    }
-    public void Select()
-    {
-        manager.GetComponent<TullyMonster67>().DeselectAll();
-        controlling = true;
-        shoot = false;
+        if (manager.GetComponent<TullyMonster67>().GetControl())
+        {
+            manager.GetComponent<TullyMonster67>().DeselectAll();
+            controlling = true;
+            shoot = false;
+            manager.GetComponent<TullyMonster67>().ResetControl();
+        }
     }
     public void Deselect()
     {

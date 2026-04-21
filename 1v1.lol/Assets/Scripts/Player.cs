@@ -5,7 +5,10 @@ using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour // double jump uses stamina, add powerups (for stamina?)
+public class Player : MonoBehaviour // double jump uses stamina, add powerups (for stamina?),
+                                    // fireboy watergirl lever/door
+                                    // spikes
+                                    // adding tab to select through monsters,
 {
     [SerializeField] float jumpForce;
     [SerializeField] float speed;

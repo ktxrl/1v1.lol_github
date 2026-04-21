@@ -1187,7 +1187,7 @@ MonoBehaviour:
   stamina: 100
   maxStamina: 100
   runCost: 25
-  attackCost: 25
+  attackCost: 50
   rollCost: 15
   jumpCost: 15
   chargeRate: 4

@@ -12,7 +12,6 @@ public class TullyMonster67 : MonoBehaviour
     [SerializeField] Camera cameraP2;
     public AudioSource Music;
     public static GameObject original;
-    bool controlling = false;
     float controlDelay = 2f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,10 +34,7 @@ public class TullyMonster67 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (controlling)
-        {
-            controlDelay += Time.deltaTime;
-        }
+        controlDelay += Time.deltaTime;
     }
     public void DeselectAll()
     {
@@ -51,13 +47,13 @@ public class TullyMonster67 : MonoBehaviour
         }
         controlDelay = 0;
     }
-    public void Control(bool o)
+    public void ResetControl()
     {
-        controlling = o;
+        controlDelay = 0;
     }
     public bool GetControl()
     {
-        return controlDelay > 1f;
+        return controlDelay > 2f;
     }
     public void ChangeMusicVolume(float volume)
     {
