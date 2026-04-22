@@ -8,6 +8,7 @@ TagManager:
   - fireball
   - door
   - player
+  - key
   layers:
   - Default
   - TransparentFX
