@@ -20,6 +20,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] Text lifeText;
     [SerializeField] GameObject comboBar;
     [SerializeField] Image staminaBar;
+    [SerializeField] Image healthBar;
     [SerializeField] float stamina;
     [SerializeField] float maxStamina;
     [SerializeField] float runCost;
@@ -27,6 +28,11 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] float rollCost;
     [SerializeField] float jumpCost;
     [SerializeField] float chargeRate;
+    [SerializeField] float health;
+    [SerializeField] float maxHealth;
+
+    [SerializeField] AudioSource slash1;
+    [SerializeField] AudioSource slash2;
 
     private Coroutine recharge;
 
@@ -57,6 +63,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         attackIndex = 0;
         attackCooldown = 0;
         staminaBar.fillAmount = maxStamina;
+        healthBar.fillAmount = maxHealth;
     }
 
     // Update is called once per frame
@@ -84,13 +91,13 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         {
             if (stamina >= runCost * Time.deltaTime)
             {
+                speed = 4f;
+
                 stamina -= runCost * Time.deltaTime;
                 if (stamina < 0) stamina = 0;
                 staminaBar.fillAmount = stamina / maxStamina;
                 if (recharge != null) StopCoroutine(recharge);
                 recharge = StartCoroutine(RechargeStamina());
-
-                speed = 4f;
             }
             else
             {
@@ -103,13 +110,14 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         {
             if (stamina >= rollCost)
             {
+                roll = true;
+                rollcooldown = 0;
+
                 stamina -= rollCost;
                 if (stamina < 0) stamina = 0;
                 staminaBar.fillAmount = stamina / maxStamina;
                 if (recharge != null) StopCoroutine(recharge);
                 recharge = StartCoroutine(RechargeStamina());
-                roll = true;
-                rollcooldown = 0;
             }
             else
             {
@@ -152,20 +160,22 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         {
             if (stamina >= attackCost)
             {
-                stamina -= attackCost;
-                if (stamina < 0) stamina = 0;
-                staminaBar.fillAmount = stamina / maxStamina;
-                if (recharge != null) StopCoroutine(recharge);
-                recharge = StartCoroutine(RechargeStamina());
-
                 attack = true;
                 lastAttack = Time.time;
                 animator.SetTrigger("Attack");
                 animator.SetInteger("AttackIndex", attackIndex);
                 comboBar.GetComponent<AttackBar>().ResetCombo();
+                if (attackIndex == 2) slash2.Play();
+                else slash1.Play();
                 attackIndex++;
                 if (attackIndex > 2) attackIndex = 0;
                 attackCooldown = 0;
+
+                stamina -= attackCost;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
             }
             else
             {
@@ -259,6 +269,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         else if (collision.gameObject.tag == "fireball")
         {
             animator.SetTrigger("Hurt");
+            health -= 20;
+            if (health < 0) health = 0;
+            healthBar.fillAmount = health / maxHealth;
             //transform.position = new Vector2(ogX, ogY);
             Destroy(collision.gameObject);
         }
@@ -302,7 +315,10 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //else
             //{
             animator.SetTrigger("Hurt");
-                //transform.position = new Vector2(ogX, ogY);
+            health -= 20;
+            if (health < 0) health = 0;
+            healthBar.fillAmount = health / maxHealth;
+            //transform.position = new Vector2(ogX, ogY);
             //}
         }
     }

@@ -13,7 +13,7 @@ public class Skeleton : MonoBehaviour
     Rigidbody2D rb;
     Animator animator;
 
-    void Start()
+    void Start() //Easy Enemy Health Bars in Unity Youtube
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
