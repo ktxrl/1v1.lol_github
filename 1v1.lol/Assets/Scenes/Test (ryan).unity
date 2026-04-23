@@ -2132,6 +2132,9 @@ MonoBehaviour:
   minX: -1.66
   maxX: 1.66
   selectArrow: {fileID: 65966770}
+  health: 0
+  maxHealth: 0
+  healthBar: {fileID: 0}
   controlling: 0
   direction: 0
 --- !u!58 &624837204
@@ -2824,8 +2827,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 4.96, y: 0}
-  m_SizeDelta: {x: 19.92, y: 0}
+  m_AnchoredPosition: {x: -0.20991135, y: 0.0021018982}
+  m_SizeDelta: {x: 9.58017, y: 0.0042015314}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1007027255
 MonoBehaviour:
@@ -3616,8 +3619,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0.29000092, y: 0}
+  m_SizeDelta: {x: -9.41, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1579981567
 GameObject:
