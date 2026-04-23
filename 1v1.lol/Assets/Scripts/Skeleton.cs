@@ -9,14 +9,21 @@ public class Skeleton : MonoBehaviour
     [SerializeField] float minX;
     [SerializeField] float maxX;
     [SerializeField] GameObject selectArrow;
+    [SerializeField] float health;
+    [SerializeField] float maxHealth;
+    [SerializeField] EnemyHealthBar healthBar;
     public bool controlling, direction;
     Rigidbody2D rb;
     Animator animator;
 
-    void Start() //Easy Enemy Health Bars in Unity Youtube
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        healthBar = GetComponentInChildren<EnemyHealthBar>(); 
+    }
+    void Start() //Easy Enemy Health Bars in Unity Youtube
+    {
         controlling = false;
         direction = false;
         selectArrow.GetComponent<SpriteRenderer>().enabled = false;
