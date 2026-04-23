@@ -20,6 +20,7 @@ public class Skeleton : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        healthBar = GetComponentInChildren<EnemyHealthBar>(); 
     }
     void Start() //Easy Enemy Health Bars in Unity Youtube
     {
