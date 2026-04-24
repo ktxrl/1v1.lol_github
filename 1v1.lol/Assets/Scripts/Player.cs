@@ -28,8 +28,8 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] float rollCost;
     [SerializeField] float jumpCost;
     [SerializeField] float chargeRate;
-    [SerializeField] float health;
-    [SerializeField] float maxHealth;
+    //[SerializeField] float health;
+    //[SerializeField] float maxHealth;
 
     [SerializeField] AudioSource slash1;
     [SerializeField] AudioSource slash2;
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         attackIndex = 0;
         attackCooldown = 0;
         staminaBar.fillAmount = maxStamina;
-        healthBar.fillAmount = maxHealth;
+        //healthBar.fillAmount = maxHealth;
     }
 
     // Update is called once per frame
@@ -269,9 +269,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         else if (collision.gameObject.tag == "fireball")
         {
             animator.SetTrigger("Hurt");
-            health -= 20;
-            if (health < 0) health = 0;
-            healthBar.fillAmount = health / maxHealth;
+            //health -= 20;
+            //if (health < 0) health = 0;
+            //healthBar.fillAmount = health / maxHealth;
             //transform.position = new Vector2(ogX, ogY);
             Destroy(collision.gameObject);
         }
@@ -315,9 +315,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //else
             //{
             animator.SetTrigger("Hurt");
-            health -= 20;
-            if (health < 0) health = 0;
-            healthBar.fillAmount = health / maxHealth;
+            //health -= 20;
+            //if (health < 0) health = 0;
+            //healthBar.fillAmount = health / maxHealth;
             //transform.position = new Vector2(ogX, ogY);
             //}
         }
