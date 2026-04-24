@@ -9,6 +9,7 @@ TagManager:
   - door
   - player
   - key
+  - spike
   layers:
   - Default
   - TransparentFX
