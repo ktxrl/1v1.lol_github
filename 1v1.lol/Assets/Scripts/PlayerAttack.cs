@@ -10,6 +10,7 @@ public class PlayerAttack : MonoBehaviour
 
     Collider2D[] hitEnemies;
     bool direction = true;
+    float damage = 20f;
 
     void Update()
     {
@@ -42,7 +43,18 @@ public class PlayerAttack : MonoBehaviour
     {
         foreach (Collider2D enemy in hitEnemies)
         {
-            Destroy(enemy.gameObject);
+            if (enemy.gameObject.tag == "skeleton")
+            {
+                enemy.GetComponent<Skeleton>().TakeDamage(damage);
+            }
+            else if (enemy.gameObject.tag == "flying")
+            {
+                enemy.GetComponent<Flying>().TakeDamage(damage);
+            }
+            else if (enemy.gameObject.tag == "lizard")
+            {
+                enemy.GetComponent<Lizard>().TakeDamage(damage);
+            }
         }
     }
 }

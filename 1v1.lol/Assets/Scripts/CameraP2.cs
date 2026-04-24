@@ -35,10 +35,11 @@ public class CameraP2 : MonoBehaviour
             transform.position += new Vector3(diff.x, diff.y, 0);
         }
         if (Input.GetMouseButtonUp(1)) dragging = false;
-        float x = Mathf.Clamp(transform.position.x, -5.5f, 5.5f);
-        float y = Mathf.Clamp(transform.position.y, 0f, 4f);    
+        //float x = Mathf.Clamp(transform.position.x, -5.5f, 5.5f);
+        //float y = Mathf.Clamp(transform.position.y, 0f, 4f);    
+       
 
-        transform.position = new Vector3(x, y, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         //scroll
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         if (scrollInput != 0)

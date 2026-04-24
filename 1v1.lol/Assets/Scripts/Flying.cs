@@ -8,6 +8,9 @@ public class Flying : MonoBehaviour
     [SerializeField] float minX;
     [SerializeField] float maxX;
     [SerializeField] GameObject selectArrow;
+    [SerializeField] float health;
+    [SerializeField] float maxHealth;
+    [SerializeField] HealthBar healthBar;
     public bool controlling, direction;
     Rigidbody2D rb;
     bool left, right, up, down;
@@ -18,6 +21,7 @@ public class Flying : MonoBehaviour
         controlling = false;
         direction = true;
         selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+        healthBar = GetComponentInChildren<HealthBar>();
     }
 
     void Update()
@@ -107,5 +111,14 @@ public class Flying : MonoBehaviour
     {
         if (!controlling)
             selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+    }
+    public void TakeDamage(float damageAmount)
+    {
+        health -= damageAmount;
+        healthBar.UpdateHealthBar(health, maxHealth);
+        if (health < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

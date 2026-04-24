@@ -10,6 +10,9 @@ public class Lizard : MonoBehaviour
     [SerializeField] float minX;
     [SerializeField] float maxX;
     [SerializeField] GameObject selectArrow;
+    [SerializeField] float health;
+    [SerializeField] float maxHealth;
+    [SerializeField] HealthBar healthBar;
     GameObject o;
     Rigidbody2D rb;
     Animator animator;
@@ -25,6 +28,7 @@ public class Lizard : MonoBehaviour
         direction = true;
         o = new GameObject();
         selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+        healthBar = GetComponentInChildren<HealthBar>();
     }
 
     void Update()
@@ -151,5 +155,14 @@ public class Lizard : MonoBehaviour
     {
         if (!controlling)
             selectArrow.GetComponent<SpriteRenderer>().enabled = false;
+    }
+    public void TakeDamage(float damageAmount)
+    {
+        health -= damageAmount;
+        healthBar.UpdateHealthBar(health, maxHealth);
+        if (health < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

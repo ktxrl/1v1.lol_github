@@ -9,7 +9,9 @@ TagManager:
   - door
   - player
   - key
-  - spike
+  - skeleton
+  - flying
+  - lizard
   layers:
   - Default
   - TransparentFX
