@@ -110,7 +110,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
                 //signal unable to run
                 speed = 2.5f;
             }
-        } 
+        }
         if (Input.GetKeyUp(KeyCode.LeftShift)) speed = 2.5f;
         if (Input.GetKey(KeyCode.C) && !roll && rollcooldown > .2f && IsGround())
         {
@@ -187,6 +187,10 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             {
                 //signal unable to attack
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //block
         }
         //if (die && Input.GetKeyDown(KeyCode.R))
         //if (Input.GetKeyDown(KeyCode.R))
