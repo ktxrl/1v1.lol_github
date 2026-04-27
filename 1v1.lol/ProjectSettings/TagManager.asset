@@ -12,6 +12,9 @@ TagManager:
   - skeleton
   - flying
   - lizard
+  - jump
+  - speed
+  - damage
   layers:
   - Default
   - TransparentFX

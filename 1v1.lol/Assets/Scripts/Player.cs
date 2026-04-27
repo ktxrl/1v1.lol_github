@@ -30,6 +30,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] float chargeRate;
     //[SerializeField] float health;
     //[SerializeField] float maxHealth;
+    [SerializeField] GameObject life1;
+    [SerializeField] GameObject life2;
+    [SerializeField] GameObject life3;
 
     [SerializeField] AudioSource slash1;
     [SerializeField] AudioSource slash2;
@@ -64,6 +67,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         attackCooldown = 0;
         staminaBar.fillAmount = maxStamina;
         //healthBar.fillAmount = maxHealth;
+        life1.SetActive(true);
+        life2.SetActive(true);
+        life3.SetActive(true);
     }
 
     // Update is called once per frame
@@ -268,6 +274,27 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         }
         else if (collision.gameObject.tag == "fireball")
         {
+            lives--;
+            if (lives == 2)
+            {
+                life3.SetActive(false);
+            }
+            if (lives == 1)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+            }
+            if (lives <= 0)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+                life1.SetActive(false);
+                die = true;
+                rb.linearVelocity = Vector2.zero;
+                dieText.enabled = true;
+                dieText.text = "You Died. You collected " + coinCount + " gems";
+                UpdateState();
+            }
             animator.SetTrigger("Hurt");
             //health -= 20;
             //if (health < 0) health = 0;
@@ -275,10 +302,26 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //transform.position = new Vector2(ogX, ogY);
             Destroy(collision.gameObject);
         }
-        else if (collision.gameObject.tag == "doublejump")
+        else if (collision.gameObject.tag == "jump")
         {
-            doubleJump = true;
+            doubleJump = false;
+            Destroy(collision.gameObject);
         }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "speed")
+        {
+            if (speed <= 3)
+            {
+                speed *= 2;
+                Invoke("Speed", 1f);
+            }
+        }
+    }
+    public void Speed()
+    {
+        speed /= 2;
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -287,8 +330,21 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //die
             //lives--;
             //lifeText.text = "Lives: " + lives;
+            lives--;
+            if (lives == 2)
+            {
+                life3.SetActive(false);
+            }
+            if (lives == 1)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+            }
             if (lives <= 0)
             {
+                life3.SetActive(false);
+                life2.SetActive(false);
+                life1.SetActive(false);
                 die = true;
                 rb.linearVelocity = Vector2.zero;
                 dieText.enabled = true;
@@ -314,7 +370,29 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //}
             //else
             //{
+            lives--;
+            if (lives == 2)
+            {
+                life3.SetActive(false);
+            }
+            if (lives == 1)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+            }
+            if (lives <= 0)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+                life1.SetActive(false);
+                die = true;
+                rb.linearVelocity = Vector2.zero;
+                dieText.enabled = true;
+                dieText.text = "You Died. You collected " + coinCount + " gems";
+                UpdateState();
+            }
             animator.SetTrigger("Hurt");
+
             //health -= 20;
             //if (health < 0) health = 0;
             //healthBar.fillAmount = health / maxHealth;

@@ -57,4 +57,17 @@ public class PlayerAttack : MonoBehaviour
             }
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "damage")
+        {
+            damage *= 2;
+            Invoke("Damage", 2f);
+            Destroy(collision.gameObject);
+        }
+    }
+    public void Damage()
+    {
+        damage /= 2;
+    }
 }

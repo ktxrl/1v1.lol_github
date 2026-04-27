@@ -165,4 +165,19 @@ public class Lizard : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "speed")
+        {
+            if (speed <= 1.5f)
+            {
+                speed *= 2;
+                Invoke("Speed", 1f);
+            }
+        }
+    }
+    public void Speed()
+    {
+        speed /= 2;
+    }
 }
