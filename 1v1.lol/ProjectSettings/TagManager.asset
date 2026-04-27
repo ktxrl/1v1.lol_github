@@ -15,6 +15,8 @@ TagManager:
   - jump
   - speed
   - damage
+  - spike
+  - button for door
   layers:
   - Default
   - TransparentFX
