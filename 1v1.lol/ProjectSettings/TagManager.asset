@@ -17,6 +17,7 @@ TagManager:
   - damage
   - spike
   - button for door
+  - fan
   layers:
   - Default
   - TransparentFX

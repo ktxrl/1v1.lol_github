@@ -38,6 +38,8 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] AudioSource slash2;
 
     private Coroutine recharge;
+    private bool isOpening = false;
+    private GameObject door;
 
     Rigidbody2D rb;
     Animator animator;
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         life1.SetActive(true);
         life2.SetActive(true);
         life3.SetActive(true);
+        door = GameObject.Find("Idle (1)");
     }
 
     // Update is called once per frame
@@ -192,6 +195,19 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         {
             //block
         }
+        if (isOpening)
+        {
+            Vector2 targetPosition = new Vector2(door.transform.position.x, -0.33f);
+            float speed = 5f * Time.deltaTime;
+
+            door.transform.position = Vector2.MoveTowards(door.transform.position, targetPosition, speed);
+
+            // Optional: Stop opening once it gets close enough to the target
+            if (Vector2.Distance(door.transform.position, targetPosition) < 0.01f)
+            {
+                isOpening = false;
+            }
+        }
         //if (die && Input.GetKeyDown(KeyCode.R))
         //if (Input.GetKeyDown(KeyCode.R))
         //{
@@ -311,6 +327,15 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             doubleJump = false;
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag == "fan")
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, 19f);
+        }
+        else if (collision.gameObject.tag == "button for door")
+        {
+            isOpening = true;
+            
+        }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -403,6 +428,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //transform.position = new Vector2(ogX, ogY);
             //}
         }
+        
     }
     private IEnumerator RechargeStamina()
     {
