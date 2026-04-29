@@ -18,6 +18,7 @@ TagManager:
   - spike
   - button for door
   - fan
+  - fan2
   layers:
   - Default
   - TransparentFX
