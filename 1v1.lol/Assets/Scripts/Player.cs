@@ -39,6 +39,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
 
     private Coroutine recharge;
     private bool isOpening = false;
+    bool shielding = false;
     
 
     Rigidbody2D rb;
@@ -153,6 +154,16 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             }
         }
         UpdateState();
+        if (Input.GetKey(KeyCode.Space))
+        {
+            animator.SetBool("Shield", true);
+            shielding = true;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            animator.SetBool("Shield", false);
+            shielding = false;
+        }
         Debug.Log(attackIndex);
         if (Time.time - lastAttack > comboDelay) attackIndex = 0;
         if (attack)
@@ -202,24 +213,23 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
 
             GameObject.Find("gate").transform.position = Vector2.MoveTowards(GameObject.Find("gate").transform.position, targetPosition, speed);
 
-            
             /*if (Vector2.Distance(door.transform.position, targetPosition) < 0.01f)
             {
                 isOpening = false;
             }*/
         }
         //if (die && Input.GetKeyDown(KeyCode.R))
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    dieText.enabled = false;
-        //    transform.position = new Vector2(ogX, ogY);
-        //    time = 0;
-        //    die = false;
-        //    gemsCount = 0;
-        //    lives = 3;
-        //    lifeText.text = "Lives: " + lives;
-        //    door.GetComponent<Door>().Deactivate();
-        //}
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            dieText.enabled = false;
+            transform.position = new Vector2(ogX, ogY);
+            time = 0;
+            die = false;
+            lives = 3;
+            life1.SetActive(true);
+            life2.SetActive(true);
+            life3.SetActive(true);
+        }
     }
     public void UpdateState()
     {
@@ -294,32 +304,35 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         }
         else if (collision.gameObject.tag == "fireball")
         {
-            lives--;
-            if (lives == 2)
+            if (shielding)
             {
-                life3.SetActive(false);
+                animator.SetTrigger("Block");
             }
-            if (lives == 1)
+            else
             {
-                life3.SetActive(false);
-                life2.SetActive(false);
+                animator.SetTrigger("Hurt");
+                lives--;
+                if (lives == 2)
+                {
+                    life3.SetActive(false);
+                }
+                if (lives == 1)
+                {
+                    life3.SetActive(false);
+                    life2.SetActive(false);
+                }
+                if (lives <= 0)
+                {
+                    life3.SetActive(false);
+                    life2.SetActive(false);
+                    life1.SetActive(false);
+                    die = true;
+                    rb.linearVelocity = Vector2.zero;
+                    dieText.enabled = true;
+                    dieText.text = "You Died. You collected " + coinCount + " gems";
+                    UpdateState();
+                }
             }
-            if (lives <= 0)
-            {
-                life3.SetActive(false);
-                life2.SetActive(false);
-                life1.SetActive(false);
-                die = true;
-                rb.linearVelocity = Vector2.zero;
-                dieText.enabled = true;
-                dieText.text = "You Died. You collected " + coinCount + " gems";
-                UpdateState();
-            }
-            animator.SetTrigger("Hurt");
-            //health -= 20;
-            //if (health < 0) health = 0;
-            //healthBar.fillAmount = health / maxHealth;
-            //transform.position = new Vector2(ogX, ogY);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "jump")
