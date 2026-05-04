@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Analytics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] float attackCost;
     [SerializeField] float rollCost;
     [SerializeField] float jumpCost;
+    [SerializeField] float shieldCost;
     [SerializeField] float chargeRate;
     //[SerializeField] float health;
     //[SerializeField] float maxHealth;
@@ -156,8 +158,16 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         UpdateState();
         if (Input.GetKey(KeyCode.Space))
         {
-            animator.SetBool("Shield", true);
-            shielding = true;
+            if (stamina >= shieldCost)
+            {
+                animator.SetBool("Shield", true);
+                shielding = true;
+                stamina -= shieldCost * Time.deltaTime;
+                if (stamina < 0) stamina = 0;
+                staminaBar.fillAmount = stamina / maxStamina;
+                if (recharge != null) StopCoroutine(recharge);
+                recharge = StartCoroutine(RechargeStamina());
+            }
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -306,7 +316,8 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         {
             if (shielding)
             {
-                animator.SetTrigger("Block");
+                Destroy(collision.gameObject);
+                return;
             }
             else
             {
@@ -340,6 +351,19 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             doubleJump = false;
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.tag == "speed")
+        {
+            if (speed <= 3)
+            {
+                speed *= 2;
+                Invoke("Speed", 1f);
+            }
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "health")
+        {
+            if (lives < 3) lives++;
+        }
         else if (collision.gameObject.tag == "fan")
         {
             rb.linearVelocity = new Vector2(rb.linearVelocityX, 19f);
@@ -352,17 +376,6 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         {
             isOpening = true;
             
-        }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "speed")
-        {
-            if (speed <= 3)
-            {
-                speed *= 2;
-                Invoke("Speed", 1f);
-            }
         }
     }
     public void Speed()
@@ -415,7 +428,8 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //    UpdateState();
             //}
             //else
-            //{
+            //{\
+            if (shielding) return;
             lives--;
             if (lives == 2)
             {

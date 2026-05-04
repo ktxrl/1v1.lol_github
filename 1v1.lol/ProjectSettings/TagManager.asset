@@ -19,6 +19,7 @@ TagManager:
   - button for door
   - fan
   - fan2
+  - health
   layers:
   - Default
   - TransparentFX
