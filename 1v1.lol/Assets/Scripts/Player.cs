@@ -35,6 +35,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] GameObject life1;
     [SerializeField] GameObject life2;
     [SerializeField] GameObject life3;
+    [SerializeField] GameObject door;
+    [SerializeField] GameObject speedBar;
+    [SerializeField] GameObject damageBar;
 
     [SerializeField] AudioSource slash1;
     [SerializeField] AudioSource slash2;
@@ -42,7 +45,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     private Coroutine recharge;
     private bool isOpening = false;
     bool shielding = false;
-    
+    bool hurt = false;
 
     Rigidbody2D rb;
     Animator animator;
@@ -156,7 +159,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             }
         }
         UpdateState();
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && !hurt)
         {
             if (stamina >= shieldCost)
             {
@@ -171,6 +174,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            hurt = false;
             animator.SetBool("Shield", false);
             shielding = false;
         }
@@ -317,33 +321,42 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             if (shielding)
             {
                 Destroy(collision.gameObject);
-                return;
+                if (direction && collision.gameObject.transform.position.x > transform.position.x)
+                {
+                    return;
+                }
+                else if (!direction && collision.gameObject.transform.position.x < transform.position.x)
+                {
+                    return;
+                }
+                animator.SetBool("Shield", false);
+                shielding = false;
+                hurt = true;
+                animator.SetTrigger("ShieldHurt");
             }
-            else
+            animator.SetTrigger("Hurt");
+            lives--;
+            if (lives == 2)
             {
-                animator.SetTrigger("Hurt");
-                lives--;
-                if (lives == 2)
-                {
-                    life3.SetActive(false);
-                }
-                if (lives == 1)
-                {
-                    life3.SetActive(false);
-                    life2.SetActive(false);
-                }
-                if (lives <= 0)
-                {
-                    life3.SetActive(false);
-                    life2.SetActive(false);
-                    life1.SetActive(false);
-                    die = true;
-                    rb.linearVelocity = Vector2.zero;
-                    dieText.enabled = true;
-                    dieText.text = "You Died. You collected " + coinCount + " gems";
-                    UpdateState();
-                }
+                life3.SetActive(false);
             }
+            if (lives == 1)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+            }
+            if (lives <= 0)
+            {
+                life3.SetActive(false);
+                life2.SetActive(false);
+                life1.SetActive(false);
+                die = true;
+                rb.linearVelocity = Vector2.zero;
+                dieText.enabled = true;
+                dieText.text = "You Died. You collected " + coinCount + " gems";
+                UpdateState();
+            }
+            
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "jump")
@@ -353,16 +366,23 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         }
         else if (collision.gameObject.tag == "speed")
         {
+
             if (speed <= 3)
             {
+                speedBar.GetComponent<AttackBar>().ResetCombo();
                 speed *= 2;
-                Invoke("Speed", 1f);
+                Invoke("Speed", 3f);
             }
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "health")
         {
             if (lives < 3) lives++;
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "damage")
+        {
+            damageBar.GetComponent<AttackBar>().ResetCombo();
         }
         else if (collision.gameObject.tag == "fan")
         {
@@ -375,7 +395,11 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         if (collision.gameObject.tag == "button for door")
         {
             isOpening = true;
-            
+        }
+        if (collision.gameObject.tag == "key")
+        {
+            //open door;
+            Destroy(collision.gameObject);
         }
     }
     public void Speed()
@@ -415,7 +439,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
                 transform.position = new Vector2(ogX, ogY);
             }
         }
-        else if (collision.gameObject.tag == "enemy")
+        else if (collision.gameObject.tag == "skeleton" || collision.gameObject.tag == "flying" || collision.gameObject.tag == "lizard")
         {
             //lives--;
             //lifeText.text = "Lives: " + lives;
@@ -429,7 +453,22 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             //}
             //else
             //{\
-            if (shielding) return;
+            if (shielding)
+            {
+                if (direction && collision.gameObject.transform.position.x > transform.position.x)
+                {
+                    return;
+                }
+                else if (!direction && collision.gameObject.transform.position.x < transform.position.x)
+                {
+                    return;
+                }
+                animator.SetBool("Shield", false);
+                shielding = false;
+                hurt = true;
+                animator.SetTrigger("ShieldHurt");
+            }
+            animator.SetTrigger("Hurt");
             lives--;
             if (lives == 2)
             {
@@ -451,15 +490,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
                 dieText.text = "You Died. You collected " + coinCount + " gems";
                 UpdateState();
             }
-            animator.SetTrigger("Hurt");
-
-            //health -= 20;
-            //if (health < 0) health = 0;
-            //healthBar.fillAmount = health / maxHealth;
-            //transform.position = new Vector2(ogX, ogY);
-            //}
         }
-        
     }
     private IEnumerator RechargeStamina()
     {

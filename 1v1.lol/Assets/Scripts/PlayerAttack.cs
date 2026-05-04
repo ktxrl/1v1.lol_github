@@ -62,7 +62,7 @@ public class PlayerAttack : MonoBehaviour
         if (collision.gameObject.tag == "damage")
         {
             damage *= 2;
-            Invoke("Damage", 2f);
+            Invoke("Damage", 3f);
             Destroy(collision.gameObject);
         }
     }
