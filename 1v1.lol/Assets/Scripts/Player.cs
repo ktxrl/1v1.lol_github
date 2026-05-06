@@ -38,6 +38,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     [SerializeField] GameObject door;
     [SerializeField] GameObject speedBar;
     [SerializeField] GameObject damageBar;
+    [SerializeField] GameObject jumpBar;
 
     [SerializeField] AudioSource slash1;
     [SerializeField] AudioSource slash2;
@@ -46,6 +47,7 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     private bool isOpening = false;
     bool shielding = false;
     bool hurt = false;
+    bool canDoubleJump = true;
 
     Rigidbody2D rb;
     Animator animator;
@@ -144,7 +146,10 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
             if (IsGround())
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-                doubleJump = false;
+                if (!canDoubleJump)
+                {
+                    doubleJump = false;
+                }
             }
             else if (stamina >= jumpCost && !doubleJump)
             {
@@ -362,6 +367,9 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
         else if (collision.gameObject.tag == "jump")
         {
             doubleJump = false;
+            jumpBar.GetComponent<AttackBar>().ResetCombo();
+            canDoubleJump = false;
+            Invoke("Jump", 3f);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "speed")
@@ -404,7 +412,11 @@ public class Player : MonoBehaviour // double jump uses stamina, add powerups (f
     }
     public void Speed()
     {
-        speed /= 2;
+        speed = 1.5f;
+    }
+    public void Jump()
+    {
+        canDoubleJump = true;
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
